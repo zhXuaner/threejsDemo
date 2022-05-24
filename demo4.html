@@ -20,12 +20,18 @@
     var geometry = new THREE.SphereGeometry(60, 25, 25); //球体
     // TextureLoader创建一个纹理加载器对象，可以加载图片作为几何体纹理
     var textureLoader = new THREE.TextureLoader();
+    // 法线贴图
+    var textureNormal = textureLoader.load('./aotu.png');
     // 执行load方法，加载纹理贴图成功后，返回一个纹理对象Texture
     textureLoader.load('./earth.png', function(texture) {
-      var material = new THREE.MeshLambertMaterial({
+      // var material = new THREE.MeshLambertMaterial({
+      var material = new THREE.MeshPhongMaterial({
         // color: 0x0000ff,
         // 设置纹理贴图：Texture对象作为材质map属性的属性值
         map: texture,
+        normalMap: textureNormal, //法线贴图
+        //设置深浅程度，默认值(1,1)。
+        normalScale: new THREE.Vector2(1.2, 1.2),
       });
       //材质对象Material
       var mesh = new THREE.Mesh(geometry, material); //网格模型对象Mesh
@@ -36,11 +42,14 @@
      */
     //点光源
     var point = new THREE.PointLight(0xffffff);
-    point.position.set(400, 200, 300); //点光源位置
+    point.position.set(20, 200, 300); //点光源位置
     scene.add(point); //点光源添加到场景中
     //环境光
     var ambient = new THREE.AmbientLight(0x444444);
     scene.add(ambient);
+    // 坐标系辅助显示
+    var axesHelper = new THREE.AxesHelper(200);
+    scene.add(axesHelper);
     /**
      * 相机设置
      */
